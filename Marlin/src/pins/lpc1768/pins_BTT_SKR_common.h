@@ -59,12 +59,8 @@
   #define TEMP_BED_PIN                  P0_23_A0  // A0 (T0) - (67) - TEMP_BED_PIN
 #endif
 
-#if HOTENDS == 1
-  #if TEMP_SENSOR_PROBE
-    #define TEMP_PROBE_PIN            TEMP_1_PIN
-  #elif TEMP_SENSOR_CHAMBER
-    #define TEMP_CHAMBER_PIN          TEMP_1_PIN
-  #endif
+#if HOTENDS == 1 && TEMP_SENSOR_PROBE
+  #define TEMP_PROBE_PIN              TEMP_1_PIN
 #endif
 
 //
@@ -75,7 +71,7 @@
 #endif
 #if HOTENDS == 1
   #ifndef FAN1_PIN
-    #define FAN1_PIN                       P2_04
+    #define FAN1_PIN                       P1_31
   #endif
 #else
   #ifndef HEATER_1_PIN
@@ -83,7 +79,7 @@
   #endif
 #endif
 #ifndef FAN_PIN
-  #define FAN_PIN                          P2_03
+  #define FAN_PIN                          P2_04
 #endif
 #ifndef HEATER_BED_PIN
   #define HEATER_BED_PIN                   P2_05
@@ -92,7 +88,7 @@
 //
 // LCD / Controller
 //
-#if HAS_WIRED_LCD && DISABLED(LCD_USE_I2C_BUZZER)
+#if HAS_SPI_LCD
   #define BEEPER_PIN                       P1_30  // (37) not 5V tolerant
 #endif
 

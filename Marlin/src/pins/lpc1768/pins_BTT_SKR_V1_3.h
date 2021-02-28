@@ -16,26 +16,32 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 #pragma once
 
-#define BOARD_INFO_NAME "BTT SKR V1.3"
+#define BOARD_INFO_NAME "BIGTREE SKR 1.3"
 
 //
-// Trinamic Stallguard pins
+// EEPROM
 //
+#define FLASH_EEPROM_EMULATION
+//#define SDCARD_EEPROM_EMULATION
+
+/**
+ * Trinamic Stallguard pins
+ */
 #define X_DIAG_PIN                         P1_29  // X-
 #define Y_DIAG_PIN                         P1_27  // Y-
 #define Z_DIAG_PIN                         P1_25  // Z-
 #define E0_DIAG_PIN                        P1_28  // X+
 #define E1_DIAG_PIN                        P1_26  // Y+
 
-//
-// Limit Switches
-//
-#ifdef X_STALL_SENSITIVITY
+/**
+ * Limit Switches
+ */
+#if X_STALL_SENSITIVITY
   #define X_STOP_PIN                  X_DIAG_PIN
   #if X_HOME_DIR < 0
     #define X_MAX_PIN                      P1_28  // X+
@@ -47,7 +53,7 @@
   #define X_MAX_PIN                        P1_28  // X+
 #endif
 
-#ifdef Y_STALL_SENSITIVITY
+#if Y_STALL_SENSITIVITY
   #define Y_STOP_PIN                  Y_DIAG_PIN
   #if Y_HOME_DIR < 0
     #define Y_MAX_PIN                      P1_26  // Y+
@@ -59,7 +65,7 @@
   #define Y_MAX_PIN                        P1_26  // Y+
 #endif
 
-#ifdef Z_STALL_SENSITIVITY
+#if Z_STALL_SENSITIVITY
   #define Z_STOP_PIN                  Z_DIAG_PIN
   #if Z_HOME_DIR < 0
     #define Z_MAX_PIN                      P1_24  // Z+
@@ -118,11 +124,18 @@
   #define Z_CS_PIN                         P1_10
 #endif
 
-#define E0_STEP_PIN                        P2_13
-#define E0_DIR_PIN                         P0_11
-#define E0_ENABLE_PIN                      P2_12
+#define Z2_STEP_PIN                         P2_13
+#define Z2_DIR_PIN                          P0_11
+#define Z2_ENABLE_PIN                       P2_12
+#ifndef Z2_CS_PIN
+  #define Z2_CS_PIN                         P1_08
+#endif
+
+#define E0_STEP_PIN                        P0_01
+#define E0_DIR_PIN                         P0_00
+#define E0_ENABLE_PIN                      P0_10
 #ifndef E0_CS_PIN
-  #define E0_CS_PIN                        P1_08
+  #define E0_CS_PIN                        P1_01
 #endif
 
 #ifndef E1_CS_PIN
@@ -151,7 +164,7 @@
    * Hardware serial communication ports.
    * If undefined software serial is used according to the pins below
    */
-  //#define X_HARDWARE_SERIAL  Serial1
+  //#define X_HARDWARE_SERIAL  Serial
   //#define X2_HARDWARE_SERIAL Serial1
   //#define Y_HARDWARE_SERIAL  Serial1
   //#define Y2_HARDWARE_SERIAL Serial1
@@ -182,7 +195,7 @@
   #define E1_SERIAL_RX_PIN                 P1_01
 
   // Reduce baud rate to improve software serial reliability
-  #define TMC_BAUD_RATE                    19200
+  #define TMC_BAUD_RATE 19200
 #endif
 
 /**
@@ -214,7 +227,7 @@
 #define EXPA2_09_PIN                       P0_15
 #define EXPA2_10_PIN                       P0_17
 
-#if HAS_WIRED_LCD
+#if HAS_SPI_LCD
 
   #if ENABLED(ANET_FULL_GRAPHICS_LCD)
 
@@ -260,18 +273,6 @@
 
     #define LCD_PINS_ENABLE         EXPA1_03_PIN
     #define LCD_PINS_D4             EXPA1_05_PIN
-
-  #elif HAS_ADC_BUTTONS
-
-    #error "ADC BUTTONS do not work unmodifed on SKR 1.3, The ADC ports cannot take more than 3.3v."
-
-  #elif IS_TFTGLCD_PANEL
-
-    #if ENABLED(TFTGLCD_PANEL_SPI)
-      #define TFTGLCD_CS            EXPA2_08_PIN
-    #endif
-
-    #define SD_DETECT_PIN           EXPA2_04_PIN
 
   #else                                           // !CR10_STOCKDISPLAY
 
@@ -358,7 +359,7 @@
 
   #endif // !CR10_STOCKDISPLAY
 
-#endif // HAS_WIRED_LCD
+#endif // HAS_SPI_LCD
 
 //
 // SD Support
